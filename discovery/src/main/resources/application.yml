@@ -1,0 +1,19 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /registry
+
+spring:
+  application:
+    name: registry
+
+eureka:
+  renewalPercentThreshold: 0.85
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+    enableSelfPreservation: false

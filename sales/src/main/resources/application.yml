@@ -1,0 +1,21 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /sales
+
+spring:
+  application:
+    name: sales
+
+  data:
+    mongodb:
+      repositories:
+        enabled: true
+      uri: mongodb://localhost:27017/sales-db
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/registry/eureka
