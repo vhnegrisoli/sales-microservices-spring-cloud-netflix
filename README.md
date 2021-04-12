@@ -28,7 +28,7 @@ O objetivo foi criar um projeto prático enquanto realizava o curso [Arquitetura
 
 ## Arquitetura do projeto
 
-![Arquitetura](link)
+![Arquitetura](https://github.com/vhnegrisoli/sales-microservices-spring-cloud-netflix/blob/master/imgs/Arquitetura%20-%20Spring%20Cloud%20Netflix.png)
 
 ## Executando a aplicação
 
