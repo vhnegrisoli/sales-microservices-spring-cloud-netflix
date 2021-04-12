@@ -3,9 +3,14 @@ package com.salesmicroservices.auth.modules.auth.controller;
 import com.salesmicroservices.auth.modules.auth.dto.AuthRequest;
 import com.salesmicroservices.auth.modules.auth.dto.AuthResponse;
 import com.salesmicroservices.auth.modules.auth.service.AuthService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/token")
@@ -20,7 +25,10 @@ public class AuthController {
     }
 
     @GetMapping("authorized")
-    public String checkAuthorized() {
-        return "Ok";
+    public ResponseEntity<HashMap<String, Object>> checkAuthorized() {
+        var response = new HashMap<String, Object>();
+        response.put("value", "You are authenticated!");
+        response.put("status", HttpStatus.OK);
+        return ResponseEntity.ok(response);
     }
 }

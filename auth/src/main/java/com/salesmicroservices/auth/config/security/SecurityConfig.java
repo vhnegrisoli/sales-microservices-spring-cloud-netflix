@@ -1,6 +1,8 @@
 package com.salesmicroservices.auth.config.security;
 
 import com.salesmicroservices.auth.modules.jwt.JwtConfigurer;
+import com.salesmicroservices.auth.modules.jwt.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +13,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -34,6 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/token").permitAll()
             .anyRequest().authenticated()
             .and()
-            .apply(new JwtConfigurer());
+            .apply(new JwtConfigurer(jwtTokenProvider));
     }
 }

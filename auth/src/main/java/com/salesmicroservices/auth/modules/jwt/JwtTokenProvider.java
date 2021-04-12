@@ -24,6 +24,8 @@ public class JwtTokenProvider {
 
     private static final Integer DEZ_MINUTOS = 10;
     private static final String BEARER = "bearer ";
+    private static final String BLANK_SPACE = " ";
+    private static final Integer INDICE_TOKEN = 1;
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Value("${security.jwt.token.secret-key}")
@@ -41,7 +43,6 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String username, List<String> roles){
-
         var claims = Jwts.claims().setSubject(username);
         claims.put("roles", roles);
 
@@ -63,23 +64,27 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader(AUTHORIZATION_HEADER);
-        if (!isEmpty(bearerToken) && bearerToken.toLowerCase().startsWith(BEARER)) {
-            bearerToken = bearerToken.toLowerCase();
-            bearerToken = bearerToken.replace(BEARER, Strings.EMPTY);
-            return bearerToken;
+        var bearerToken = req.getHeader(AUTHORIZATION_HEADER);
+        var token = Strings.EMPTY;
+        if (!isEmpty(bearerToken)) {
+            if (bearerToken.contains(BLANK_SPACE)) {
+                token = bearerToken.split(BLANK_SPACE)[INDICE_TOKEN];
+                return token;
+            } else {
+                return bearerToken;
+            }
         }
         return Strings.EMPTY;
     }
 
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            var claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
             }
             return true;
-        } catch(JwtException | IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }

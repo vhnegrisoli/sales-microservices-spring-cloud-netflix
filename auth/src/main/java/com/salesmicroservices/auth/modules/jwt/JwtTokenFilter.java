@@ -15,8 +15,12 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 
 public class JwtTokenFilter extends GenericFilterBean {
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override
     public void doFilter(ServletRequest request,

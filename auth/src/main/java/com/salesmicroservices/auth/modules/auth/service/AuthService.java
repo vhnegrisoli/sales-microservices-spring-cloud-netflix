@@ -20,7 +20,7 @@ public class AuthService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @Auto
+    @Autowired
     private UserRepository userRepository;
 
     public AuthResponse getAuthorizationToken(AuthRequest request) {
