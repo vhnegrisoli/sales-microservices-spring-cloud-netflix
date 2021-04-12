@@ -21,7 +21,7 @@ O objetivo foi criar um projeto prático enquanto realizava o curso [Arquitetura
 * **MongoDB**
 * **PostgreSQL**
 * **Docker**
-* **Docker-Compose
+* **Docker-Compose**
 * **JWT**
 * **Swagger**
 * **Gradle**
