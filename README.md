@@ -59,18 +59,18 @@ Para esconder os logs no terminal, rode o comando com a flag `-d`.
 
 As aplicações ficarão nos seguintes endereços:
 
-Auth API -> 				http://localhost:8080
-Product API -> 				http://localhost:8081
-Sales API -> 				http://localhost:8082
-Service Discovery API -> 	http://localhost:8083
-Gateway API ->				http://localhost:3000
+* Auth API -> 				http://localhost:8080
+* Product API -> 			http://localhost:8081
+* Sales API -> 				http://localhost:8082
+* Service Discovery API -> 	http://localhost:8083
+* Gateway API ->			http://localhost:3000
 
 Outras aplicações:
 
-RabbitMQ -> 				http://localhost:5172
-RabbitMQ Dashboard -> 		http://localhost:15172
-PostgreSQL ->				http://localhost:5432
-MongoDB ->					http://localhost:27017
+* RabbitMQ -> 				http://localhost:5172
+* RabbitMQ Dashboard ->		http://localhost:15172
+* PostgreSQL ->				http://localhost:5432
+* MongoDB ->				http://localhost:27017
 
 ## Documentação
 
@@ -78,9 +78,9 @@ A documentação de cada API é utilizando o Swagger. Os projetos que possuem do
 
 O endereço de acesso de cada documentação é:
 
-Auth API -> 				http://localhost:8080/swagger-ui.html
-Product API -> 				http://localhost:8081/swagger-ui.html
-Sales API -> 				http://localhost:8082/swagger-ui.html
+* Auth API -> 				http://localhost:8080/swagger-ui.html
+* Product API ->			http://localhost:8081/swagger-ui.html
+* Sales API -> 				http://localhost:8082/swagger-ui.html
 
 ## Autor
 
