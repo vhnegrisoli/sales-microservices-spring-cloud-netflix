@@ -36,6 +36,9 @@ dependencies {
 	}
 	testImplementation 'org.springframework.amqp:spring-rabbit-test'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 dependencyManagement {

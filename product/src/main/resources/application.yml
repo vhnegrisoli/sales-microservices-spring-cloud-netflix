@@ -38,3 +38,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8083/registry/eureka
+
+security:
+  jwt:
+    token:
+      secret-key: microservices_application_test_dev
+      expire-length: 360000
