@@ -2,15 +2,15 @@ package com.salesmicroservices.auth.modules.auth.controller;
 
 import com.salesmicroservices.auth.modules.auth.dto.AuthRequest;
 import com.salesmicroservices.auth.modules.auth.dto.AuthResponse;
+import com.salesmicroservices.auth.modules.auth.dto.AuthUser;
 import com.salesmicroservices.auth.modules.auth.service.AuthService;
+import com.salesmicroservices.auth.modules.auth.service.AuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/token")
@@ -18,6 +18,9 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private AuthUserService authUserService;
 
     @PostMapping
     public AuthResponse getAuthorizationToken(@RequestBody AuthRequest request) {
@@ -30,5 +33,10 @@ public class AuthController {
         response.put("value", "You are authenticated!");
         response.put("status", HttpStatus.OK);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("auth-user")
+    public AuthUser getAuthUser() {
+        return authUserService.getAuthUser();
     }
 }

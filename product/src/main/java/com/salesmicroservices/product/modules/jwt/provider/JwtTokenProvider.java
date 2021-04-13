@@ -1,22 +1,22 @@
-package com.salesmicroservices.auth.modules.jwt;
+package com.salesmicroservices.product.modules.jwt.provider;
 
-import com.salesmicroservices.auth.modules.user.UserService;
-import com.salesmicroservices.auth.modules.user.model.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -35,31 +35,43 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.expire-length}")
     private long expire;
 
-    @Autowired
-    private UserService userService;
-
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(User user, List<String> roles){
-        var claims = Jwts.claims().setSubject(user.getUsername());
-
-        claims.put("username", user.getUsername());
-        claims.put("userId", user.getId());
-        claims.put("roles", roles);
-
-        return Jwts
-            .builder()
-            .setClaims(claims)
-            .setIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
-            .setExpiration(gerarExpiracao())
-            .signWith(SignatureAlgorithm.HS256, secretKey).compact();
-    }
-
     public Authentication getAuthentication(String token) {
-        var userDetails = userService.loadUserByUsername(getUserName(token));
+        var userDetails = new UserDetails() {
+            private static final long serialVersionUID = 1L;
+
+            public boolean isEnabled() {
+                return true;
+            }
+
+            public boolean isCredentialsNonExpired() {
+                return true;
+            }
+
+            public boolean isAccountNonLocked() {
+                return true;
+            }
+
+            public boolean isAccountNonExpired() {
+                return true;
+            }
+
+            public String getUsername() {
+                return "";
+            }
+
+            public String getPassword() {
+                return "";
+            }
+
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                return null;
+            }
+        };
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -95,13 +107,5 @@ public class JwtTokenProvider {
 
     public Jws<Claims> getClaims(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-    }
-
-    public Date gerarExpiracao() {
-        return Date.from(
-            LocalDateTime.now()
-                .plusMinutes(DEZ_MINUTOS)
-                .atZone(ZoneId.systemDefault()).toInstant()
-        );
     }
 }
