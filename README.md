@@ -59,18 +59,18 @@ Para esconder os logs no terminal, rode o comando com a flag `-d`.
 
 As aplicações ficarão nos seguintes endereços:
 
-* Auth API -> 				http://localhost:8080
-* Product API -> 			http://localhost:8081
-* Sales API -> 				http://localhost:8082
-* Service Discovery API -> 	http://localhost:8083
-* Gateway API ->			http://localhost:3000
+* Auth API ->               http://localhost:8080/auth
+* Product API ->            http://localhost:8081/product
+* Sales API ->              http://localhost:8082/sales
+* Service Discovery API ->  http://localhost:8083
+* Gateway API ->            http://localhost:3000/api
 
 Outras aplicações:
 
-* RabbitMQ -> 				http://localhost:5172
-* RabbitMQ Dashboard ->		http://localhost:15172
-* PostgreSQL ->				http://localhost:5432
-* MongoDB ->				http://localhost:27017
+* RabbitMQ ->               http://localhost:5172
+* RabbitMQ Dashboard ->     http://localhost:15172
+* PostgreSQL ->             http://localhost:5432
+* MongoDB ->                http://localhost:27017
 
 ## Documentação
 
@@ -78,9 +78,75 @@ A documentação de cada API é utilizando o Swagger. Os projetos que possuem do
 
 O endereço de acesso de cada documentação é:
 
-* Auth API -> 				http://localhost:8080/swagger-ui.html
-* Product API ->			http://localhost:8081/swagger-ui.html
-* Sales API -> 				http://localhost:8082/swagger-ui.html
+* Auth API ->               http://localhost:8080/auth/swagger-ui.html
+* Product API ->            http://localhost:8081/product/swagger-ui.html
+* Sales API ->              http://localhost:8082/sales/swagger-ui.html
+
+## API Gateway com Zuul
+
+O projeto API Gateway utiliza a tecnologia `Spring Cloud Netflix Zuul Proxy` que permite criar um gateway entre as 3 APIs: Sales, Auth e Product.
+
+O path padrão desse projeto é `/api`.
+
+Para acessar os projetos acima apenas via Gateway:
+
+* Auth:                     http://localhost:3000/api/auth
+* Product:                  http://localhost:3000/api/product
+* Sales:                    http://localhost:3000/api/sales
+
+É possível acessar o Swagger pelo Gateway também ao invés de acessar cada API individualmente, basta acessar os caminhos acima, porém, com `swagger-ui.html` ao fim.
+
+## Obter Token de Acesso
+
+```
+Request:
+
+Método: POST
+URL: http://localhost:8080/auth/token (http://localhost:3000/api/auth/token via Gateway)
+Body: 
+{
+    "username": "test_user",
+    "password": "123456"
+}
+
+Response:
+
+Status: 200 | OK
+
+{
+    "username": "test_user",
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+
+```
+
+Exemplo de uso do Access Token em algum endpoint:
+
+```
+Request:
+
+Método: GET
+URL: http://localhost:8081/product (http://localhost:3000/api/product via Gateway)
+Headers: 
+{
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+
+Response:
+
+Status: 200 | OK
+
+{
+ Add Response    
+}
+
+Caso não envie o Header de Authorization em qualquer endpoint protegido, o retorno será:
+
+{
+    Add Response
+}
+
+```
 
 ## Autor
 
