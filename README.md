@@ -98,21 +98,26 @@ Para acessar os projetos acima apenas via Gateway:
 
 ## Obter Token de Acesso
 
-```
 Request:
 
 Método: POST
+
 URL: http://localhost:8080/auth/token (http://localhost:3000/api/auth/token via Gateway)
+
 Body: 
+
+```
 {
     "username": "test_user",
     "password": "123456"
 }
+```
 
 Response:
 
 Status: 200 | OK
 
+```
 {
     "username": "test_user",
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
@@ -122,30 +127,100 @@ Status: 200 | OK
 
 Exemplo de uso do Access Token em algum endpoint:
 
-```
 Request:
 
 Método: GET
+
 URL: http://localhost:8081/product (http://localhost:3000/api/product via Gateway)
+
 Headers: 
+
+```
 {
     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 }
+```
 
 Response:
 
 Status: 200 | OK
-
-{
- Add Response    
-}
+```
+[
+  {
+    "productId": 1,
+    "productDescription": "Man of Steel",
+    "price": 19.9,
+    "quantityAvailable": 3,
+    "category": {
+      "id": 1,
+      "description": "Comic Books"
+    },
+    "supplier": {
+      "id": 1,
+      "name": "Amazon",
+      "einCnpj": "515151165"
+    }
+  },
+  {
+    "productId": 2,
+    "productDescription": "Spider-Man 2",
+    "price": 14.9,
+    "quantityAvailable": 1,
+    "category": {
+      "id": 3,
+      "description": "Movies"
+    },
+    "supplier": {
+      "id": 2,
+      "name": "Ebay",
+      "einCnpj": "156156181856"
+    }
+  },
+  {
+    "productId": 3,
+    "productDescription": "Harry Potter",
+    "price": 25.9,
+    "quantityAvailable": 2,
+    "category": {
+      "id": 2,
+      "description": "Books"
+    },
+    "supplier": {
+      "id": 2,
+      "name": "Ebay",
+      "einCnpj": "156156181856"
+    }
+  },
+  {
+    "productId": 4,
+    "productDescription": "Liga da JustiÃ§a 01",
+    "price": 5.99,
+    "quantityAvailable": 4,
+    "category": {
+      "id": 1,
+      "description": "Comic Books"
+    },
+    "supplier": {
+      "id": 3,
+      "name": "Panini",
+      "einCnpj": "444886664"
+    }
+  }
+]
+```
 
 Caso não envie o Header de Authorization em qualquer endpoint protegido, o retorno será:
 
-{
-    Add Response
-}
+Status: 403 | Forbidden
 
+```
+{
+  "timestamp": "2021-04-14T18:40:32.903+00:00",
+  "status": 403,
+  "error": "Forbidden",
+  "message": "Access Denied",
+  "path": "/product/"
+}
 ```
 
 ## Autor
