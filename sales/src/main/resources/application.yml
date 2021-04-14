@@ -25,3 +25,8 @@ security:
     token:
       secret-key: microservices_application_test_dev
       expire-length: 360000
+
+client:
+  service:
+    product:
+      url: http://localhost:8081/product

@@ -23,7 +23,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
       format_sql: true
     show-sql: true
     properties:
@@ -44,3 +44,8 @@ security:
     token:
       secret-key: microservices_application_test_dev
       expire-length: 360000
+
+client:
+  service:
+    sales:
+      url: http://localhost:8082/sales

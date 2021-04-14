@@ -32,6 +32,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    private String[] getPermitedUrls() {
+        return new String[] {
+            "/",
+            "/public",
+            "/csrf",
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/swagger-resources/configuration/security",
+            "/swagger-resources/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/webjars/**"
+        };
+    }
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
@@ -40,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+            .antMatchers(getPermitedUrls()).permitAll()
             .anyRequest().authenticated()
             .and()
             .apply(new JwtConfigurer(jwtTokenProvider));

@@ -8,12 +8,14 @@ import com.salesmicroservices.auth.modules.auth.service.AuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/token")
 public class AuthController {
 
     @Autowired
@@ -22,7 +24,7 @@ public class AuthController {
     @Autowired
     private AuthUserService authUserService;
 
-    @PostMapping
+    @PostMapping("token")
     public AuthResponse getAuthorizationToken(@RequestBody AuthRequest request) {
         return authService.getAuthorizationToken(request);
     }
@@ -38,5 +40,12 @@ public class AuthController {
     @GetMapping("auth-user")
     public AuthUser getAuthUser() {
         return authUserService.getAuthUser();
+    }
+
+    @GetMapping("public")
+    public ResponseEntity<HashMap<String, String>> checkPublicEndpoint() {
+        var response = new HashMap<String, String>();
+        response.put("message", "Ok! I'm a public endpoint!!!");
+        return ResponseEntity.ok(response);
     }
 }
