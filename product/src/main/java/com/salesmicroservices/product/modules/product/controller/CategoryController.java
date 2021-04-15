@@ -42,7 +42,7 @@ public class CategoryController {
     }
 
     @GetMapping("description/{description}")
-    public CategoryDto findByDescription(@PathVariable String description) {
+    public List<CategoryDto> findByDescription(@PathVariable String description) {
         return categoryService.findByDescription(description);
     }
 }

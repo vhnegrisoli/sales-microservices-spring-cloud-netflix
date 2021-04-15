@@ -1,5 +1,6 @@
 package com.salesmicroservices.product.modules.jwt.provider;
 
+import com.salesmicroservices.product.modules.jwt.util.RequestUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -77,6 +78,10 @@ public class JwtTokenProvider {
 
     private String getUserName(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getAccessToken() {
+        return resolveToken(RequestUtil.getCurrentRequest());
     }
 
     public String resolveToken(HttpServletRequest req) {

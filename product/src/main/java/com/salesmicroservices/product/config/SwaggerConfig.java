@@ -34,10 +34,10 @@ public class SwaggerConfig {
 
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
-            .title("Auth API")
-            .description("Auth API for Sales Microservices Project")
+            .title("Product API")
+            .description("Product API for Sales Microservices Project")
             .version("1.0.0")
-            .licenseUrl("http://localhost:8080/auth")
+            .licenseUrl("http://localhost:8081/product")
             .build();
     }
 

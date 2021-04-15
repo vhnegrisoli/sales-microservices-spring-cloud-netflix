@@ -66,15 +66,12 @@ public class CategoryService {
             .collect(Collectors.toList());
     }
 
-    public CategoryDto findByDescription(String description) {
-        return CategoryDto.convertFrom(categoryRepository
-            .findByDescription(description)
-            .orElseThrow(() -> new ValidationException(
-                "The category "
-                    .concat(String.valueOf(description))
-                    .concat(" does not exists."))
-            )
-        );
+    public List<CategoryDto> findByDescription(String description) {
+        return categoryRepository
+            .findByDescriptionContainingIgnoreCase(description)
+            .stream()
+            .map(CategoryDto::convertFrom)
+            .collect(Collectors.toList());
     }
 
     private void validateCategoryExistingForProducts(Integer categoryId) {
