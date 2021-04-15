@@ -10,4 +10,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Optional<Product> findByDescription(String description);
 
     Boolean existsByDescription(String description);
+
+    Boolean existsByCategoryId(Integer categoryId);
+
+    Boolean existsBySupplierId(Integer categoryId);
 }

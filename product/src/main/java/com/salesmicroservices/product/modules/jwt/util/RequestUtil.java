@@ -1,6 +1,6 @@
 package com.salesmicroservices.product.modules.jwt.util;
 
-import com.salesmicroservices.product.config.exception.NotFoundException;
+import com.salesmicroservices.product.config.exception.ValidationException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -15,7 +15,7 @@ public class RequestUtil {
                 .getRequest();
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new NotFoundException("Error trying to get the current request.");
+            throw new ValidationException("Error trying to get the current request.");
         }
     }
 }

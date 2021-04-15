@@ -21,4 +21,12 @@ public class ProductService {
             .map(ProductResponse::convertFrom)
             .collect(Collectors.toList());
     }
+
+    public boolean existsByCategoryId(Integer categoryId) {
+        return productRepository.existsByCategoryId(categoryId);
+    }
+
+    public boolean existsBySupplierId(Integer supplierId) {
+        return productRepository.existsBySupplierId(supplierId);
+    }
 }

@@ -10,4 +10,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     Optional<Category> findByDescription(String description);
 
     Boolean existsByDescription(String description);
+
+    Boolean existsByDescriptionAndIdNot(String description, Integer id);
 }

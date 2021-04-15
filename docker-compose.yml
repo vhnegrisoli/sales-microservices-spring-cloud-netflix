@@ -6,9 +6,9 @@ services:
     container_name: auth-db
     restart: always
     environment:
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=auth
+      - POSTGRES_PASSWORD=1y5h8j
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=auth-db
     ports:
       - 5432:5432
 
@@ -17,11 +17,11 @@ services:
     container_name: product-db
     restart: always
     environment:
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=product
+      - POSTGRES_PASSWORD=1y5h8j
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=product-db
     ports:
-      - 5432:5432
+      - 5433:5432
 
   sales-db:
     image: tutum/mongodb

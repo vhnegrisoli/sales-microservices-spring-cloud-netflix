@@ -12,7 +12,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/product-db
+    url: jdbc:postgresql://localhost:5433/product-db
     username: postgres
     password: 1y5h8j
     initialization-mode: always
