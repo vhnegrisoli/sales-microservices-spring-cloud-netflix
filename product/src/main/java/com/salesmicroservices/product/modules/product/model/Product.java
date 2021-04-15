@@ -47,4 +47,8 @@ public class Product {
             .supplier(Supplier.fromId(request.getSupplierId()))
             .build();
     }
+
+    public void updateStock(Integer quantity) {
+        quantityAvailable = quantityAvailable - quantity;
+    }
 }

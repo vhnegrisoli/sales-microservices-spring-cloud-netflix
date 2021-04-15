@@ -32,6 +32,12 @@ spring:
         jdbc:
           lob.non_contextual_creation: true
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 eureka:
   instance:
     hostname: localhost
@@ -49,3 +55,15 @@ client:
   service:
     sales:
       url: http://localhost:8082/sales
+
+rabbit:
+  exchange:
+    product: product.topic
+
+  routingkey:
+    product-stock: product.stock-update.routingkey
+    product-sales-confirmation: product-sales-confirmation.routingkey
+
+  queue:
+    product-stock: product.stock-update.queue
+    product-sales-confirmation: product-sales-confirmation.queue
