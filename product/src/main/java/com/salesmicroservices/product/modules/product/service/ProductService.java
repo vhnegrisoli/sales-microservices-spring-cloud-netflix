@@ -8,6 +8,7 @@ import com.salesmicroservices.product.modules.product.rabbitmq.ProductSender;
 import com.salesmicroservices.product.modules.product.repository.ProductRepository;
 import com.salesmicroservices.product.modules.sales.dto.SalesProductsResponse;
 import com.salesmicroservices.product.modules.sales.dto.SalesResponse;
+import com.salesmicroservices.product.modules.sales.dto.SalesSuccessResponse;
 import com.salesmicroservices.product.modules.sales.service.SalesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,21 @@ public class ProductService {
     private SalesService salesService;
 
     public ProductResponse save(ProductRequest request) {
-        validateProductRequest(request, false);
+        validateProductRequest(request);
+        validateProductData(request, false);
         var product = Product.convertFrom(request);
         productRepository.save(product);
-        return ProductResponse.convertFrom(product);
+        return findProductResponseById(product.getId());
     }
 
     public ProductResponse update(ProductRequest request, Integer id) {
+        validateProductRequest(request);
         request.setId(id);
-        validateProductRequest(request, true);
+        validateProductData(request, true);
         var product = Product.convertFrom(request);
+        product.setId(id);
         productRepository.save(product);
-        return ProductResponse.convertFrom(product);
+        return findProductResponseById(product.getId());
     }
 
     public SuccessResponse delete(Integer id) {
@@ -75,17 +79,21 @@ public class ProductService {
 
     private void validateExistingProductForSales(Integer id) {
         var sales = salesService.findSalesByProductId(id);
-        if (!isEmpty(sales)) {
-            throw new ValidationException("It's not possible to delete the product"
+        validateSuccessSalesResponse(sales);
+        if (!isEmpty(sales.getSalesResponse())) {
+            throw new ValidationException("It's not possible to delete the product "
                 .concat(String.valueOf(id))
                 .concat(". There are products available for sales."));
         }
     }
 
-    private void validateProductRequest(ProductRequest request, boolean isUpdate) {
+    private void validateProductRequest(ProductRequest request) {
         if (isEmpty(request)) {
             throw new ValidationException("The product request must not be empty.");
         }
+    }
+
+    private void validateProductData(ProductRequest request, boolean isUpdate) {
         validateProductFields(request, isUpdate);
         validateExistingProduct(request, isUpdate);
     }
@@ -155,23 +163,8 @@ public class ProductService {
 
     public ProductBySales findTotalSalesByProductId(Integer productId) {
         var sales = salesService.findSalesByProductId(productId);
-
-        return ProductBySales
-            .builder()
-            .productId(productId)
-            .totalSales(sales
-                .stream()
-                .map(SalesResponse::getProducts)
-                .map(products -> products
-                    .stream()
-                    .map(SalesProductsResponse::getQuantity)
-                    .reduce(0L, Long::sum))
-                .reduce(0L, Long::sum))
-            .sales(sales
-                .stream()
-                .map(SalesResponse::getSalesId)
-                .collect(Collectors.toList()))
-            .build();
+        validateSuccessSalesResponse(sales);
+        return ProductBySales.convertFrom(sales.getSalesResponse(), productId);
     }
 
     public void updateStock(ProductStockMessage message) {
@@ -221,5 +214,11 @@ public class ProductService {
 
     public boolean existsBySupplierId(Integer supplierId) {
         return productRepository.existsBySupplierId(supplierId);
+    }
+
+    private void validateSuccessSalesResponse(SalesSuccessResponse sales) {
+        if (!sales.isSuccess()) {
+            throw new ValidationException("It was not possible to proccess your data in Sales API.");
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.salesmicroservices.product.config.LogRequest;
 import com.salesmicroservices.product.config.LogResponse;
 import com.salesmicroservices.product.modules.sales.client.SalesClient;
 import com.salesmicroservices.product.modules.sales.dto.SalesResponse;
+import com.salesmicroservices.product.modules.sales.dto.SalesSuccessResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,15 +25,15 @@ public class SalesService {
     @Value("${client.service.sales.url}")
     private String service;
 
-    public List<SalesResponse> findSalesByProductId(Integer productId) {
+    public SalesSuccessResponse findSalesByProductId(Integer productId) {
         try {
             logRequest("product/{productId}", productId);
             var sales = salesClient.findSalesByProduct(productId);
             logResponse(sales);
-            return sales;
+            return SalesSuccessResponse.createSuccessResponse(sales);
         } catch (Exception ex) {
             log.error("Error while trying to get Sales by productId: ".concat(String.valueOf(productId)), ex);
-            return Collections.emptyList();
+            return SalesSuccessResponse.createFailResponse();
         }
     }
 

@@ -54,7 +54,7 @@ security:
 client:
   service:
     sales:
-      url: http://localhost:8082/sales
+      url: http://localhost:8082/sales/sales
 
 rabbit:
   exchange:

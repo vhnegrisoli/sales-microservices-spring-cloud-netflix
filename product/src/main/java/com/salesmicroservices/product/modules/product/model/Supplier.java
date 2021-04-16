@@ -1,5 +1,6 @@
 package com.salesmicroservices.product.modules.product.model;
 
+import com.salesmicroservices.product.modules.product.dto.SupplierDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +23,16 @@ public class Supplier {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "EIN_CNPJ", nullable = false)
+    @Column(name = "EIN_CNPJ", nullable = false, unique = true)
     private String einCnpj;
+
+    public static Supplier convertFrom(SupplierDto request) {
+        return Supplier
+            .builder()
+            .name(request.getName())
+            .einCnpj(request.getEinCnpj())
+            .build();
+    }
 
     public static Supplier fromId(Integer id) {
         return Supplier

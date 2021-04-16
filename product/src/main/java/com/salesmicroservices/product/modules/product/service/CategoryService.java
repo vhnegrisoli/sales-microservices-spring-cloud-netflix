@@ -23,18 +23,21 @@ public class CategoryService {
     private ProductService productService;
 
     public CategoryDto save(CategoryDto request) {
-        validateCategoryRequest(request, false);
+        validateCategoryRequest(request);
+        validateCategoryData(request, false);
         var category = Category.convertFrom(request);
         categoryRepository.save(category);
-        return CategoryDto.convertFrom(category);
+        return findById(category.getId());
     }
 
     public CategoryDto update(CategoryDto request, Integer id) {
+        validateCategoryRequest(request);
         request.setId(id);
-        validateCategoryRequest(request, true);
+        validateCategoryData(request, true);
         var category = Category.convertFrom(request);
+        category.setId(id);
         categoryRepository.save(category);
-        return CategoryDto.convertFrom(category);
+        return findById(category.getId());
     }
 
     public SuccessResponse delete(Integer categoryId) {
@@ -87,17 +90,16 @@ public class CategoryService {
         }
     }
 
-    private void validateCategoryRequest(CategoryDto request, boolean isUpdate) {
-        validateNotNulLRequest(request);
+    private void validateCategoryRequest(CategoryDto request) {
+        if (isEmpty(request)) {
+            throw new ValidationException("The category request must not be empty.");
+        }
+    }
+
+    private void validateCategoryData(CategoryDto request, boolean isUpdate) {
         validateNotNullCategoryDescription(request);
         validateNotNullCategoryId(request, isUpdate);
         validateExistingCategoryDescription(request, isUpdate);
-    }
-
-    private void validateNotNulLRequest(CategoryDto request) {
-        if (isEmpty(request)) {
-            throw new ValidationException("Category data must not be empty.");
-        }
     }
 
     private void validateNotNullCategoryDescription(CategoryDto request) {

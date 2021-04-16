@@ -32,3 +32,12 @@ services:
     ports:
       - '27017:27017'
       - '28017:28017'
+
+  sales_rabbit:
+    image: rabbitmq:3-management
+    container_name: sales_rabbit
+    hostname: sales_rabbit
+    ports:
+      - '5672:5672'
+      - '25676:25676'
+      - '15672:15672'
