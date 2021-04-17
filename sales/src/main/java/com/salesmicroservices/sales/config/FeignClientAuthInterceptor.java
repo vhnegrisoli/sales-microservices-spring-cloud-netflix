@@ -1,6 +1,6 @@
 package com.salesmicroservices.sales.config;
 
-import com.salesmicroservices.product.modules.jwt.provider.JwtTokenProvider;
+import com.salesmicroservices.sales.modules.jwt.provider.JwtTokenProvider;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

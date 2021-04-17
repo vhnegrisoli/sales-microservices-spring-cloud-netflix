@@ -1,4 +1,4 @@
-package com.salesmicroservices.sales.modules.sales;
+package com.salesmicroservices.sales.modules.sales.enums;
 
 import lombok.Getter;
 

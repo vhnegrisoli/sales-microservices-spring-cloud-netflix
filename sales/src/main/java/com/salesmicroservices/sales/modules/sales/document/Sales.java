@@ -1,7 +1,8 @@
 package com.salesmicroservices.sales.modules.sales.document;
 
+import com.salesmicroservices.sales.modules.jwt.dto.AuthUser;
 import com.salesmicroservices.sales.modules.product.dto.ProductResponse;
-import com.salesmicroservices.sales.modules.sales.SalesStatus;
+import com.salesmicroservices.sales.modules.sales.enums.SalesStatus;
 import com.salesmicroservices.sales.modules.sales.dto.SalesProductRequest;
 import com.salesmicroservices.sales.modules.sales.dto.SalesRequest;
 import lombok.AllArgsConstructor;
@@ -12,9 +13,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,7 +40,11 @@ public class Sales {
 
     private SalesStatus status = SalesStatus.PENDING;
 
-    private List<SalesProduct> products;
+    private List<SalesProduct> products = new ArrayList<>();
+
+    private List<String> cancelationCause = new ArrayList<>();
+
+    private SalesBuyer buyer = new SalesBuyer();
 
     public BigDecimal calculateTotalSales() {
         return BigDecimal
@@ -54,9 +59,10 @@ public class Sales {
             .setScale(TWO_DECIMAL, RoundingMode.HALF_UP);
     }
 
-    public static Sales convertFrom(SalesRequest request, List<ProductResponse> products) {
+    public static Sales convertFrom(SalesRequest request, List<ProductResponse> products, AuthUser authUser) {
         var sales = new Sales();
         sales.setProducts(sales.createProductsList(request.getProducts(), products));
+        sales.setBuyer(SalesBuyer.convertFrom(authUser));
         return sales;
     }
 
@@ -75,5 +81,13 @@ public class Sales {
             .filter(productRequest -> productRequest.getProductId().equals(productId))
             .map(SalesProductRequest::getQuantity)
             .reduce(BigDecimal.ZERO.intValue(), Integer::sum);
+    }
+
+    public boolean isCanceled() {
+        return SalesStatus.CANCELED.equals(status);
+    }
+
+    public boolean isPending() {
+        return SalesStatus.PENDING.equals(status);
     }
 }

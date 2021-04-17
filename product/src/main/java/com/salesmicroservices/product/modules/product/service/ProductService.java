@@ -6,18 +6,14 @@ import com.salesmicroservices.product.modules.product.dto.*;
 import com.salesmicroservices.product.modules.product.model.Product;
 import com.salesmicroservices.product.modules.product.rabbitmq.ProductSender;
 import com.salesmicroservices.product.modules.product.repository.ProductRepository;
-import com.salesmicroservices.product.modules.sales.dto.SalesProductsResponse;
-import com.salesmicroservices.product.modules.sales.dto.SalesResponse;
 import com.salesmicroservices.product.modules.sales.dto.SalesSuccessResponse;
 import com.salesmicroservices.product.modules.sales.service.SalesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -195,12 +191,13 @@ public class ProductService {
 
     private boolean isValidMessage(ProductStockMessage message) {
         return !isEmpty(message)
+            && !isEmpty(message.getSalesId())
             && !isEmpty(message.getProductId())
             && !isEmpty(message.getQuantity());
     }
 
-    private SalesConfirmatioMessage defineSalesConfirmationMessage(ProductStockMessage message, Product product) {
-        var salesConfirmatioMessage = new SalesConfirmatioMessage();
+    private SalesConfirmationMessage defineSalesConfirmationMessage(ProductStockMessage message, Product product) {
+        var salesConfirmatioMessage = new SalesConfirmationMessage();
         salesConfirmatioMessage.setSalesId(message.getSalesId());
         if (product.getQuantityAvailable() >= message.getQuantity()) {
             updateProductStock(product, message.getQuantity());

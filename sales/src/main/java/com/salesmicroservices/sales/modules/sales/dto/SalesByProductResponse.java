@@ -1,17 +1,19 @@
-package com.salesmicroservices.product.modules.product.dto;
+package com.salesmicroservices.sales.modules.sales.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SalesConfirmatioMessage {
+public class SalesByProductResponse {
 
     private String salesId;
-    private boolean confirmed;
-    private String cause;
+
+    private List<ProductIdQuantityResponse> products;
 }

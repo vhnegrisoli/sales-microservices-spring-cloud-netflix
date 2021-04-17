@@ -1,7 +1,8 @@
 package com.salesmicroservices.sales.modules.sales.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.salesmicroservices.sales.modules.sales.SalesStatus;
+import com.salesmicroservices.sales.modules.sales.document.SalesBuyer;
+import com.salesmicroservices.sales.modules.sales.enums.SalesStatus;
 import com.salesmicroservices.sales.modules.sales.document.Sales;
 import com.salesmicroservices.sales.modules.sales.document.SalesProduct;
 import com.salesmicroservices.sales.modules.sales.util.DateConstants;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -30,9 +32,13 @@ public class SalesResponse {
 
     private SalesStatus status = SalesStatus.PENDING;
 
-    private List<SalesProduct> products;
+    private List<SalesProduct> products = Collections.emptyList();
 
-    private BigDecimal salesTotal;
+    private BigDecimal salesTotal = BigDecimal.ZERO;
+
+    private List<String> cancelationCause = Collections.emptyList();
+
+    private SalesBuyer buyer = new SalesBuyer();
 
     public static SalesResponse convertFrom(Sales sales) {
         return SalesResponse
@@ -42,7 +48,9 @@ public class SalesResponse {
             .lastUpdate(sales.getLastUpdate())
             .status(sales.getStatus())
             .products(sales.getProducts())
+            .buyer(sales.getBuyer())
             .salesTotal(sales.calculateTotalSales())
+            .cancelationCause(sales.getCancelationCause())
             .build();
     }
 }

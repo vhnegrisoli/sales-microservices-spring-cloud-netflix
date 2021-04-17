@@ -15,5 +15,6 @@ eureka:
     service-url:
       defaultZone: http://localhost:${server.port}/eureka/
   server:
-    wait-time-in-ms-when-sync-empty: 0
+    waitTimeInMsWhenSyncEmpty: 0
     enableSelfPreservation: false
+  enableSelfPreservation: false

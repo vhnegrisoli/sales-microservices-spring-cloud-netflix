@@ -1,7 +1,7 @@
-package com.salesmicroservices.product.modules.product.rabbitmq;
+package com.salesmicroservices.sales.modules.sales.rabbitmq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.salesmicroservices.product.modules.product.dto.SalesConfirmationMessage;
+import com.salesmicroservices.sales.modules.sales.dto.ProductMqRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ProductSender {
+public class SalesSender {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -18,13 +18,13 @@ public class ProductSender {
     @Value("${rabbit.exchange.product}")
     private String productTopicExchange;
 
-    @Value("${rabbit.routingkey.product-sales-confirmation}")
-    private String productSalesConfirmationKey;
+    @Value("${rabbit.routingkey.product-stock}")
+    private String productStockRoutingkey;
 
-    public void sendSalesConfirmationMessage(SalesConfirmationMessage message) {
-        var topicRoutingKeyLogMessage = getTopicRoutingKeyLogMessage(productTopicExchange, productSalesConfirmationKey);
+    public void sendProductStockUpdateMessage(ProductMqRequest message) {
+        var topicRoutingKeyLogMessage = getTopicRoutingKeyLogMessage(productTopicExchange, productStockRoutingkey);
         try {
-            rabbitTemplate.convertAndSend(productTopicExchange, productSalesConfirmationKey, message);
+            rabbitTemplate.convertAndSend(productTopicExchange, productStockRoutingkey, message);
             log.info("Sending data: "
                 .concat(new ObjectMapper().writeValueAsString(message))
                 .concat(topicRoutingKeyLogMessage)
