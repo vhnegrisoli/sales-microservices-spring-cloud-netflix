@@ -1,6 +1,6 @@
 package com.salesmicroservices.sales.modules.jwt.service;
 
-import com.salesmicroservices.sales.config.exception.NotFoundException;
+import com.salesmicroservices.sales.config.exception.ValidationException;
 import com.salesmicroservices.sales.modules.jwt.dto.AuthUser;
 import com.salesmicroservices.sales.modules.jwt.provider.JwtTokenProvider;
 import com.salesmicroservices.sales.modules.jwt.util.RequestUtil;
@@ -21,7 +21,7 @@ public class AuthUserService {
             return AuthUser.convertFrom(userClaims.getBody());
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new NotFoundException("There are no authenticated user.");
+            throw new ValidationException("There are no authenticated user.");
         }
     }
 }

@@ -34,7 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private String[] getPermitedUrls() {
         return new String[] {
-            "/",
             "/public",
             "/csrf",
             "/v2/api-docs",

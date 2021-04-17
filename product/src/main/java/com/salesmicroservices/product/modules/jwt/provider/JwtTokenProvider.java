@@ -24,17 +24,12 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @Service
 public class JwtTokenProvider {
 
-    private static final Integer DEZ_MINUTOS = 10;
-    private static final String BEARER = "bearer ";
     private static final String BLANK_SPACE = " ";
     private static final Integer INDICE_TOKEN = 1;
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
-
-    @Value("${security.jwt.token.expire-length}")
-    private long expire;
 
     @PostConstruct
     protected void init() {

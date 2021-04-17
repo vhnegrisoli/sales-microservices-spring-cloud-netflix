@@ -161,13 +161,29 @@ public class ProductService {
             .collect(Collectors.toList());
     }
 
+    public List<ProductResponse> findByIds(List<Integer> productsIds) {
+        return productRepository
+            .findByIdIn(productsIds)
+            .stream()
+            .map(ProductResponse::convertFrom)
+            .collect(Collectors.toList());
+    }
+
     public ProductBySales findTotalSalesByProductId(Integer productId) {
         var sales = salesService.findSalesByProductId(productId);
         validateSuccessSalesResponse(sales);
         return ProductBySales.convertFrom(sales.getSalesResponse(), productId);
     }
 
-    public void updateStock(ProductStockMessage message) {
+    public void updateStock(ProductMqResponse message) {
+        if (!isEmpty(message) && !isEmpty(message.getSalesProducts())) {
+            message
+                .getSalesProducts()
+                .forEach(this::processProductUpdateStock);
+        }
+    }
+
+    private void processProductUpdateStock(ProductStockMessage message) {
         if (isValidMessage(message)) {
             var product = findById(message.getProductId());
             var salesConfirmatioMessage = defineSalesConfirmationMessage(message, product);
@@ -186,17 +202,21 @@ public class ProductService {
     private SalesConfirmatioMessage defineSalesConfirmationMessage(ProductStockMessage message, Product product) {
         var salesConfirmatioMessage = new SalesConfirmatioMessage();
         salesConfirmatioMessage.setSalesId(message.getSalesId());
-        if (product.getQuantityAvailable() < message.getQuantity()) {
+        if (product.getQuantityAvailable() >= message.getQuantity()) {
+            updateProductStock(product, message.getQuantity());
+            salesConfirmatioMessage.setConfirmed(true);
+        } else {
             var salesFailMessage = createSalesFailMessage(message, product);
             log.error(salesFailMessage);
             salesConfirmatioMessage.setCause(salesFailMessage);
             salesConfirmatioMessage.setConfirmed(false);
-        } else {
-            product.updateStock(message.getQuantity());
-            productRepository.save(product);
-            salesConfirmatioMessage.setConfirmed(true);
         }
         return salesConfirmatioMessage;
+    }
+
+    private void updateProductStock(Product product, Integer quantity) {
+        product.updateStock(quantity);
+        productRepository.save(product);
     }
 
     private String createSalesFailMessage(ProductStockMessage message, Product product) {

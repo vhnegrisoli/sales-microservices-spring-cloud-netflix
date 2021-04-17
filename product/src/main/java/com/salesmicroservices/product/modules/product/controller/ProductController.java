@@ -8,6 +8,7 @@ import com.salesmicroservices.product.modules.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 @RestController
@@ -61,5 +62,10 @@ public class ProductController {
     @GetMapping("{productId}/sales/total")
     public ProductBySales findTotalSalesByProductId(@PathVariable Integer productId) {
         return productService.findTotalSalesByProductId(productId);
+    }
+
+    @GetMapping("ids")
+    public List<ProductResponse> findByIds(@RequestParam(name = "ids") List<Integer> ids) {
+        return productService.findByIds(ids);
     }
 }

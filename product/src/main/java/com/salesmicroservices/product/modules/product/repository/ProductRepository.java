@@ -4,7 +4,6 @@ import com.salesmicroservices.product.modules.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
@@ -21,4 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Boolean existsByCategoryId(Integer categoryId);
 
     Boolean existsBySupplierId(Integer categoryId);
+
+    List<Product> findByIdIn(List<Integer> productsIds);
 }

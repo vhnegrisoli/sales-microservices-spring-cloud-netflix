@@ -43,4 +43,4 @@ security:
   jwt:
     token:
       secret-key: microservices_application_test_dev
-      expire-length: 360000
+      expire-length-in-minutes: 10

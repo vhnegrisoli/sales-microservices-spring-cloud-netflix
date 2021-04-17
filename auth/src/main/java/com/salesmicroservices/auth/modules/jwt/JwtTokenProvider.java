@@ -23,8 +23,6 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @Service
 public class JwtTokenProvider {
 
-    private static final Integer DEZ_MINUTOS = 10;
-    private static final String BEARER = "bearer ";
     private static final String BLANK_SPACE = " ";
     private static final Integer INDICE_TOKEN = 1;
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -32,8 +30,8 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
 
-    @Value("${security.jwt.token.expire-length}")
-    private long expire;
+    @Value("${security.jwt.token.expire-length-in-minutes}")
+    private Integer expire;
 
     @Autowired
     private UserService userService;
@@ -100,7 +98,7 @@ public class JwtTokenProvider {
     public Date gerarExpiracao() {
         return Date.from(
             LocalDateTime.now()
-                .plusMinutes(DEZ_MINUTOS)
+                .plusMinutes(expire)
                 .atZone(ZoneId.systemDefault()).toInstant()
         );
     }

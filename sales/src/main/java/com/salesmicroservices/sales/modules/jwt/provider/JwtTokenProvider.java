@@ -1,5 +1,6 @@
 package com.salesmicroservices.sales.modules.jwt.provider;
 
+import com.salesmicroservices.sales.modules.jwt.util.RequestUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -23,8 +24,6 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @Service
 public class JwtTokenProvider {
 
-    private static final Integer DEZ_MINUTOS = 10;
-    private static final String BEARER = "bearer ";
     private static final String BLANK_SPACE = " ";
     private static final Integer INDICE_TOKEN = 1;
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -77,6 +76,10 @@ public class JwtTokenProvider {
 
     private String getUserName(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getAccessToken() {
+        return resolveToken(RequestUtil.getCurrentRequest());
     }
 
     public String resolveToken(HttpServletRequest req) {

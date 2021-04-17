@@ -27,7 +27,7 @@ public class SalesService {
 
     public SalesSuccessResponse findSalesByProductId(Integer productId) {
         try {
-            logRequest("product/{productId}", productId);
+            logRequest("/product/{productId}", productId);
             var sales = salesClient.findSalesByProduct(productId);
             logResponse(sales);
             return SalesSuccessResponse.createSuccessResponse(sales);
