@@ -61,8 +61,18 @@ public class SalesService {
             .flatMap(this::toSalesToMonoSalesResponse);
     }
 
+    public Flux<SalesByProductResponse> findByProductId(Integer productId) {
+        return salesRepository
+            .findByProductId(productId)
+            .flatMap(this::toSalesToMonoSalesByProductResponse);
+    }
+
     private Mono<SalesResponse> toSalesToMonoSalesResponse(Sales sales) {
         return Mono.just(SalesResponse.convertFrom(sales));
+    }
+
+    private Mono<SalesByProductResponse> toSalesToMonoSalesByProductResponse(Sales sales) {
+        return Mono.just(SalesByProductResponse.convertFrom(sales));
     }
 
     private Sales findById(String salesId) {
