@@ -41,3 +41,114 @@ services:
       - '5672:5672'
       - '25676:25676'
       - '15672:15672'
+
+  auth:
+    build: './auth'
+    container_name: auth
+    ports:
+      - 8080:8080
+    depends_on:
+      - auth-db
+      - discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8080
+      - APPLICATION_NAME=auth
+      - DATABASE_HOST=auth-db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=auth-db
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=1y5h8j
+      - EUREKA_HOST=discovery
+      - EUREKA_PORT=8083
+      - JWT_TOKEN_SECRET_KEY=microservices_application_test_dev
+      - JWT_TOKEN_EXPIRATION_TIME_IN_MINUTES=10
+
+  product:
+    build: './product'
+    container_name: product
+    ports:
+      - 8081:8081
+    depends_on:
+      - product-db
+      - sales_rabbit
+      - auth
+      - discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8081
+      - APPLICATION_NAME=product
+      - DATABASE_HOST=product-db
+      - DATABASE_PORT=5433
+      - DATABASE_NAME=product-db
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=1y5h8j
+      - EUREKA_HOST=discovery
+      - EUREKA_PORT=8083
+      - JWT_TOKEN_SECRET_KEY=microservices_application_test_dev
+      - RABBIT_HOST=sales_rabbit
+      - RABBIT_PORT=5672
+      - RABBIT_USERNAME=guest
+      - RABBIT_PASSWORD=guest
+      - SALES_HOST=sales
+      - SALES_PORT=8082
+
+  sales:
+    build: './sales'
+    container_name: sales
+    ports:
+      - 8082:8082
+    depends_on:
+      - sales-db
+      - sales_rabbit
+      - auth
+      - discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8082
+      - APPLICATION_NAME=sales
+      - MONGO_HOST=sales-db
+      - MONGO_PORT=27017
+      - MONGO_DATABASE=sales-db
+      - EUREKA_HOST=discovery
+      - EUREKA_PORT=8083
+      - JWT_TOKEN_SECRET_KEY=microservices_application_test_dev
+      - RABBIT_HOST=sales_rabbit
+      - RABBIT_PORT=5672
+      - RABBIT_USERNAME=guest
+      - RABBIT_PASSWORD=guest
+      - PRODUCT_HOST=product
+      - PRODUCT_PORT=8081
+
+  discovery:
+    build: './discovery'
+    container_name: discovery
+    ports:
+      - 8083:8083
+    depends_on:
+      - auth-db
+      - sales-db
+      - sales_rabbit
+      - product-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8083
+      - APPLICATION_NAME=discovery
+      - EUREKA_HOST=discovery
+
+  gateway:
+    build: './gateway'
+    container_name: gateway
+    ports:
+      - 3000:3000
+    depends_on:
+      - auth
+      - sales
+      - product
+      - discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=3000
+      - APPLICATION_NAME=gateway
+      - EUREKA_HOST=discovery
+      - EUREKA_PORT=8083

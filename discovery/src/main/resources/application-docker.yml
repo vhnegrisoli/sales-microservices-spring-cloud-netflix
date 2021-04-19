@@ -1,0 +1,20 @@
+server:
+  port: ${SERVER_PORT}
+  servlet:
+    context-path: /${APPLICATION_NAME}
+
+spring:
+  application:
+    name: ${APPLICATION_NAME}
+
+eureka:
+  renewalPercentThreshold: 0.85
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${EUREKA_HOST}:${server.port}/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    enableSelfPreservation: false
+  enableSelfPreservation: false

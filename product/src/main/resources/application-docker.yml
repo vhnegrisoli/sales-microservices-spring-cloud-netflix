@@ -1,0 +1,68 @@
+server:
+  port: ${SERVER_PORT}
+  servlet:
+    context-path: /${APPLICATION_NAME}
+
+spring:
+  application:
+    name: ${APPLICATION_NAME}
+
+  main:
+    allow-bean-definition-overriding: true
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    initialization-mode: always
+    initialize: true
+    continue-on-error: true
+    platform: postgresql
+    maxActive: 3
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      format_sql: true
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        jdbc:
+          lob.non_contextual_creation: true
+
+  rabbitmq:
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
+
+eureka:
+  instance:
+    hostname: ${EUREKA_HOST}
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOST}:${EUREKA_PORT}/registry/eureka
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
+
+client:
+  service:
+    sales:
+      url: http://${SALES_HOST}:${SALES_PORT}/sales/sales
+
+rabbit:
+  exchange:
+    product: product.topic
+
+  routingkey:
+    product-stock: product.stock-update.routingkey
+    product-sales-confirmation: product-sales-confirmation.routingkey
+
+  queue:
+    product-stock: product.stock-update.queue
+    product-sales-confirmation: product-sales-confirmation.queue

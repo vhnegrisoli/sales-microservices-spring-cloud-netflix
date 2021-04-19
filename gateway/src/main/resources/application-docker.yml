@@ -1,0 +1,37 @@
+server:
+  port: ${SERVER_PORT}
+
+spring:
+  application:
+    name: ${APPLICATION_NAME}
+
+eureka:
+  instance:
+    hostname: ${EUREKA_HOST}
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOST}:${EUREKA_PORT}/registry/eureka
+
+zuul:
+  prefix: /api
+  ignored-services: "*"
+
+  routes:
+
+    sales:
+      path: /sales/**
+      service-id: sales
+      strip-prefix: false
+      custom-sensitive-headers: true
+
+    product:
+      path: /product/**
+      service-id: product
+      strip-prefix: false
+      custom-sensitive-headers: true
+
+    auth:
+      path: /auth/**
+      service-id: auth
+      strip-prefix: false
+      custom-sensitive-headers: true

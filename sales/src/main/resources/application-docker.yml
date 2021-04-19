@@ -1,41 +1,40 @@
 server:
-  port: 8082
+  port: ${SERVER_PORT}
   servlet:
-    context-path: /sales
+    context-path: /${APPLICATION_NAME}
 
 spring:
   application:
-    name: sales
+    name: ${APPLICATION_NAME}
 
   data:
     mongodb:
       repositories:
         enabled: true
-      uri: mongodb://localhost:27017/sales-db
+        uri: mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}
 
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: ${EUREKA_HOST}
   client:
     serviceUrl:
-      defaultZone: http://localhost:8083/registry/eureka
+      defaultZone: http://${EUREKA_HOST}:${EUREKA_PORT}/registry/eureka
 
 security:
   jwt:
     token:
-      secret-key: microservices_application_test_dev
-      expire-length: 360000
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
 
 client:
   service:
-    product:
-      url: http://localhost:8081/product/product
+    sales:
+      url: http://${PRODUCT_HOST}:${PRODUCT_PORT}/sales/sales
 
 rabbit:
   exchange:
