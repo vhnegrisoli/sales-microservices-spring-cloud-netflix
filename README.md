@@ -82,6 +82,30 @@ O endereço de acesso de cada documentação é:
 * Product API ->            http://localhost:8081/product/swagger-ui.html
 * Sales API ->              http://localhost:8082/sales/swagger-ui.html
 
+Swagger do projeto Auth:
+
+![Swagger Auth](https://github.com/vhnegrisoli/sales-microservices-spring-cloud-netflix/blob/master/imgs/Auth%20Swagger.png)
+
+Swagger do projeto Product:
+
+![Swagger Product](https://github.com/vhnegrisoli/sales-microservices-spring-cloud-netflix/blob/master/imgs/Product%20Swagger.png)
+
+Swagger do projeto Sales:
+
+![Swagger Sales](https://github.com/vhnegrisoli/sales-microservices-spring-cloud-netflix/blob/master/imgs/Sales%20Swagger.png)
+
+## Service Discovery com Spring Cloud Netflix Eureka
+
+O projeto utiliza o Spring Cloud Netflix Eureka como Service Discovery da arquitetura. O projeto Discovery possui o servidor Eureka, e os outros projetos conectam-se a eles através de um Client com o Eureka.
+
+Após uma aplicação se registrar no Eureka, ele estará listado na dashboard do Eureka, disponível em:
+
+http://localhost:8083/registry
+
+O dashboard pode ser visto conforme a imagem abaixo:
+
+![Eureka Dashboard](https://github.com/vhnegrisoli/sales-microservices-spring-cloud-netflix/blob/master/imgs/Spring%20Eureka%20Dashboard.png)
+
 ## API Gateway com Zuul
 
 O projeto API Gateway utiliza a tecnologia `Spring Cloud Netflix Zuul Proxy` que permite criar um gateway entre as 3 APIs: Sales, Auth e Product.
