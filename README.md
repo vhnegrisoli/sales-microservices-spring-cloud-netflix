@@ -247,6 +247,37 @@ Status: 403 | Forbidden
 }
 ```
 
+## Parando os containers
+
+#### Caso esteja utilizando Windows, basta apenas:
+
+1. Criar um arquivo com a extensão `.bat` e adicionar dentros os seguintes comandos:
+
+```
+@ECHO OFF
+FOR /f "tokens=*" %%i IN ('docker ps -q') DO docker stop %%i
+
+docker container prune
+```
+
+2. Executar este arquivo. Ao executar, todos os containers rodando serão parados, e pedirá uma confirmação para removê-los. Aperte `y` para sim e `n` para não.
+
+#### Caso esteja utilizando Linux, basta apenas:
+
+Basta rodar o comando:
+
+`docker kill $(docker ps -q)`
+
+Caso dê erro de permissão, rode como:
+
+`sudo docker kill $(sudo docker ps -q)`
+
+E, por fim, para remover os containers:
+
+`docker container prune`
+
+Espero ter ajudado! ;)
+
 ## Autor
 
 #### Victor Hugo Negrisoli
