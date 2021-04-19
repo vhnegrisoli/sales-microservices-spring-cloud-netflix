@@ -79,7 +79,7 @@ services:
       - SERVER_PORT=8081
       - APPLICATION_NAME=product
       - DATABASE_HOST=product-db
-      - DATABASE_PORT=5433
+      - DATABASE_PORT=5432
       - DATABASE_NAME=product-db
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=1y5h8j
@@ -107,9 +107,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SERVER_PORT=8082
       - APPLICATION_NAME=sales
-      - MONGO_HOST=sales-db
-      - MONGO_PORT=27017
-      - MONGO_DATABASE=sales-db
+      - MONGO_URI=mongodb://sales-db:27017/sales-db
       - EUREKA_HOST=discovery
       - EUREKA_PORT=8083
       - JWT_TOKEN_SECRET_KEY=microservices_application_test_dev
@@ -125,15 +123,10 @@ services:
     container_name: discovery
     ports:
       - 8083:8083
-    depends_on:
-      - auth-db
-      - sales-db
-      - sales_rabbit
-      - product-db
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SERVER_PORT=8083
-      - APPLICATION_NAME=discovery
+      - APPLICATION_NAME=registry
       - EUREKA_HOST=discovery
 
   gateway:
@@ -142,9 +135,6 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - auth
-      - sales
-      - product
       - discovery
     environment:
       - SPRING_PROFILES_ACTIVE=docker

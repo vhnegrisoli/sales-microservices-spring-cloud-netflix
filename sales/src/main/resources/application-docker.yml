@@ -11,7 +11,7 @@ spring:
     mongodb:
       repositories:
         enabled: true
-        uri: mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}
+        uri: ${MONGO_URI}
 
   rabbitmq:
     host: ${RABBIT_HOST}
@@ -33,8 +33,8 @@ security:
 
 client:
   service:
-    sales:
-      url: http://${PRODUCT_HOST}:${PRODUCT_PORT}/sales/sales
+    product:
+      url: http://${PRODUCT_HOST}:${PRODUCT_PORT}/product/product
 
 rabbit:
   exchange:
