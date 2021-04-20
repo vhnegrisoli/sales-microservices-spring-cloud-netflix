@@ -11,7 +11,7 @@ spring:
     mongodb:
       repositories:
         enabled: true
-        uri: ${MONGO_URI}
+      uri: ${MONGO_URI}
 
   rabbitmq:
     host: ${RABBIT_HOST}
