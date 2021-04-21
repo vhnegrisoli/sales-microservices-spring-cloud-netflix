@@ -12,26 +12,23 @@ eureka:
     serviceUrl:
       defaultZone: http://${EUREKA_HOST}:${EUREKA_PORT}/registry/eureka
 
+ribbon:
+  eureka:
+    enabled: true
+
 zuul:
   prefix: /api
   ignored-services: "*"
 
   routes:
-
     sales:
-      path: /sales/**
-      service-id: sales
-      strip-prefix: false
       custom-sensitive-headers: true
+      url: ${SALES_URL}
 
     product:
-      path: /product/**
-      service-id: product
-      strip-prefix: false
       custom-sensitive-headers: true
+      url: ${PRODUCT_URL}
 
     auth:
-      path: /auth/**
-      service-id: auth
-      strip-prefix: false
       custom-sensitive-headers: true
+      url: ${AUTH_URL}

@@ -8,13 +8,12 @@ spring:
     name: ${APPLICATION_NAME}
 
 eureka:
-  renewalPercentThreshold: 0.85
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    registerWithEureka: false
+    fetchRegistry: false
     service-url:
       defaultZone: http://${EUREKA_HOST}:${server.port}/eureka/
   server:
     waitTimeInMsWhenSyncEmpty: 0
     enableSelfPreservation: false
-  enableSelfPreservation: false
+    renewalPercentThreshold: 0.85

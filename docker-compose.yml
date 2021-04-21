@@ -1,6 +1,5 @@
-version: '3'
+version: "3"
 services:
-      
   auth-db:
     image: postgres:11
     container_name: auth-db
@@ -30,20 +29,20 @@ services:
     environment:
       - AUTH=no
     ports:
-      - '27017:27017'
-      - '28017:28017'
+      - "27017:27017"
+      - "28017:28017"
 
   sales_rabbit:
     image: rabbitmq:3-management
     container_name: sales_rabbit
     hostname: sales_rabbit
     ports:
-      - '5672:5672'
-      - '25676:25676'
-      - '15672:15672'
+      - "5672:5672"
+      - "25676:25676"
+      - "15672:15672"
 
   auth:
-    build: './auth'
+    build: "./auth"
     container_name: auth
     ports:
       - 8080:8080
@@ -65,7 +64,7 @@ services:
       - JWT_TOKEN_EXPIRATION_TIME_IN_MINUTES=10
 
   product:
-    build: './product'
+    build: "./product"
     container_name: product
     ports:
       - 8081:8081
@@ -94,7 +93,7 @@ services:
       - SALES_PORT=8082
 
   sales:
-    build: './sales'
+    build: "./sales"
     container_name: sales
     ports:
       - 8082:8082
@@ -119,7 +118,7 @@ services:
       - PRODUCT_PORT=8081
 
   discovery:
-    build: './discovery'
+    build: "./discovery"
     container_name: discovery
     ports:
       - 8083:8083
@@ -130,7 +129,7 @@ services:
       - EUREKA_HOST=discovery
 
   gateway:
-    build: './gateway'
+    build: "./gateway"
     container_name: gateway
     ports:
       - 3000:3000
@@ -142,3 +141,6 @@ services:
       - APPLICATION_NAME=gateway
       - EUREKA_HOST=discovery
       - EUREKA_PORT=8083
+      - SALES_URL=http://sales:8082/sales/
+      - PRODUCT_URL=http://product:8081/product/
+      - AUTH_URL=http://auth:8080/auth/

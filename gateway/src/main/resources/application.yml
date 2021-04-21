@@ -12,26 +12,23 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8083/registry/eureka
 
+ribbon:
+  eureka:
+    enabled: true
+
 zuul:
   prefix: /api
   ignored-services: "*"
 
   routes:
-
     sales:
-      path: /sales/**
-      service-id: sales
-      strip-prefix: false
       custom-sensitive-headers: true
+      url: http://localhost:8082/sales/
 
     product:
-      path: /product/**
-      service-id: product
-      strip-prefix: false
       custom-sensitive-headers: true
+      url: http://localhost:8081/product/
 
     auth:
-      path: /auth/**
-      service-id: auth
-      strip-prefix: false
       custom-sensitive-headers: true
+      url: http://localhost:8080/auth/

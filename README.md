@@ -9,23 +9,23 @@ O objetivo foi criar um projeto prático enquanto realizava o curso [Arquitetura
 
 ## Tecnologias utilizadas
 
-* **Java 11**
-* **Spring Boot 2.3**
-* **REST API**
-* **Spring Cloud Netflix Eureka Service Discovery**
-* **Spring Cloud Netflix Zuul**
-* **Spring Webflux**
-* **Spring Data JPA**
-* **Reactive Spring Data MongoDB**
-* **Spring Security**
-* **MongoDB**
-* **PostgreSQL**
-* **Docker**
-* **Docker-Compose**
-* **JWT**
-* **Swagger**
-* **Gradle**
-* **RabbitMQ**
+- **Java 11**
+- **Spring Boot 2.3**
+- **REST API**
+- **Spring Cloud Netflix Eureka Service Discovery**
+- **Spring Cloud Netflix Zuul**
+- **Spring Webflux**
+- **Spring Data JPA**
+- **Reactive Spring Data MongoDB**
+- **Spring Security**
+- **MongoDB**
+- **PostgreSQL**
+- **Docker**
+- **Docker-Compose**
+- **JWT**
+- **Swagger**
+- **Gradle**
+- **RabbitMQ**
 
 ## Arquitetura do projeto
 
@@ -55,22 +55,31 @@ Caso você tenha o Docker em sua máquina, basta rodar o comando:
 
 Para esconder os logs no terminal, rode o comando com a flag `-d`.
 
+### Executando sem os serviços
+
+É possível executar apenas os bancos de dados (PostgreSQL e MongoDB) e a instância do RabbitMQ. Quem
+realizará tal ação é o arquivo `docker-compose_without_services.yml`.
+
+Para especificar ao `docker-compose` que quer este arquivo, basta rodar o comando:
+
+`docker-compose -f docker-compose_without_services.yml up --build -d`
+
 #### Acesso
 
 As aplicações ficarão nos seguintes endereços:
 
-* Auth API ->               http://localhost:8080/auth
-* Product API ->            http://localhost:8081/product
-* Sales API ->              http://localhost:8082/sales
-* Service Discovery API ->  http://localhost:8083
-* Gateway API ->            http://localhost:3000/api
+- Auth API -> http://localhost:8080/auth
+- Product API -> http://localhost:8081/product
+- Sales API -> http://localhost:8082/sales
+- Service Discovery API -> http://localhost:8083
+- Gateway API -> http://localhost:3000/api
 
 Outras aplicações:
 
-* RabbitMQ ->               http://localhost:5172
-* RabbitMQ Dashboard ->     http://localhost:15172
-* PostgreSQL ->             http://localhost:5432
-* MongoDB ->                http://localhost:27017
+- RabbitMQ -> http://localhost:5172
+- RabbitMQ Dashboard -> http://localhost:15172
+- PostgreSQL -> http://localhost:5432
+- MongoDB -> http://localhost:27017
 
 ## Documentação
 
@@ -78,9 +87,9 @@ A documentação de cada API é utilizando o Swagger. Os projetos que possuem do
 
 O endereço de acesso de cada documentação é:
 
-* Auth API ->               http://localhost:8080/auth/swagger-ui.html
-* Product API ->            http://localhost:8081/product/swagger-ui.html
-* Sales API ->              http://localhost:8082/sales/swagger-ui.html
+- Auth API -> http://localhost:8080/auth/swagger-ui.html
+- Product API -> http://localhost:8081/product/swagger-ui.html
+- Sales API -> http://localhost:8082/sales/swagger-ui.html
 
 Swagger do projeto Auth:
 
@@ -114,9 +123,9 @@ O path padrão desse projeto é `/api`.
 
 Para acessar os projetos acima apenas via Gateway:
 
-* Auth:                     http://localhost:3000/api/auth
-* Product:                  http://localhost:3000/api/product
-* Sales:                    http://localhost:3000/api/sales
+- Auth: http://localhost:3000/api/auth
+- Product: http://localhost:3000/api/product
+- Sales: http://localhost:3000/api/sales
 
 É possível acessar o Swagger pelo Gateway também ao invés de acessar cada API individualmente, basta acessar os caminhos acima, porém, com `swagger-ui.html` ao fim.
 
@@ -128,7 +137,7 @@ Método: POST
 
 URL: http://localhost:8080/auth/token (http://localhost:3000/api/auth/token via Gateway)
 
-Body: 
+Body:
 
 ```
 {
@@ -157,7 +166,7 @@ Método: GET
 
 URL: http://localhost:8081/product (http://localhost:3000/api/product via Gateway)
 
-Headers: 
+Headers:
 
 ```
 {
@@ -168,6 +177,7 @@ Headers:
 Response:
 
 Status: 200 | OK
+
 ```
 [
   {
@@ -281,4 +291,5 @@ Espero ter ajudado! ;)
 ## Autor
 
 #### Victor Hugo Negrisoli
+
 #### Desenvolvedor de Software Back-End
